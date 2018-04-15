@@ -1,0 +1,279 @@
+site_name: 'modm barebone embedded library'
+site_description: 'A modular C++14 library for barebone programming'
+site_author: 'Niklas Hauser'
+site_url: 'http://modm.io'
+
+# Repository
+repo_name: modm-io/modm
+repo_url: 'https://github.com/modm-io/modm'
+edit_uri: ""
+# dev_addr: 192.168.1.2:8000
+
+copyright: 'Copyright &copy 2018 Niklas Hauser & modm authors'
+
+# Turn around for GitHub Hosting in /docs
+docs_dir: 'src'
+site_dir: '../../modm.io/docs'
+extra_css: [extra.css]
+
+theme:
+  name: 'material'
+  include_search_page: false
+  search_index_only: true
+  palette:
+    primary: 'indigo'
+    accent: 'cyan'
+  # logo: '../images/logo.svg'
+  font:
+    text: 'Ubuntu'
+    code: 'Ubuntu Mono'
+  language: en
+  feature:
+    tabs: true
+
+extra:
+  social:
+    - type: github-alt
+      link: https://github.com/modm-io
+    - type: twitter
+      link: https://twitter.com/RCA_eV
+
+markdown_extensions:
+  - markdown.extensions.admonition
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+pages:
+  - Home:
+    - Introduction: index.md
+    - How modm works: how-modm-works.md
+    - Who we are: who-we-are.md
+  - Guide:
+    - Getting Started: guide/getting-started.md
+    - Installation: guide/installation.md
+    # - Qt Creator: guide/qtcreator.md
+    - Cookbook: guide/cookbook.md
+    - Testing: guide/testing.md
+  - Reference:
+    - Build Systems: reference/build-systems.md
+  #   - Overview: reference/overview.md
+  #   - Concepts: reference/concepts.md
+  #   - Library Builder: reference/library-builder.md
+    - Modules:
+# moduletable
+      - modm:architecture: reference/module/modm-architecture.md
+      - modm:architecture:1-wire: reference/module/modm-architecture-1-wire.md
+      - modm:architecture:accessor: reference/module/modm-architecture-accessor.md
+      - modm:architecture:adc: reference/module/modm-architecture-adc.md
+      - modm:architecture:assert: reference/module/modm-architecture-assert.md
+      - modm:architecture:atomic: reference/module/modm-architecture-atomic.md
+      - modm:architecture:block.device: reference/module/modm-architecture-block-device.md
+      - modm:architecture:can: reference/module/modm-architecture-can.md
+      - modm:architecture:clock: reference/module/modm-architecture-clock.md
+      - modm:architecture:delay: reference/module/modm-architecture-delay.md
+      - modm:architecture:gpio: reference/module/modm-architecture-gpio.md
+      - modm:architecture:gpio.expander: reference/module/modm-architecture-gpio-expander.md
+      - modm:architecture:heap: reference/module/modm-architecture-heap.md
+      - modm:architecture:i2c: reference/module/modm-architecture-i2c.md
+      - modm:architecture:i2c.device: reference/module/modm-architecture-i2c-device.md
+      - modm:architecture:interrupt: reference/module/modm-architecture-interrupt.md
+      - modm:architecture:memory: reference/module/modm-architecture-memory.md
+      - modm:architecture:register: reference/module/modm-architecture-register.md
+      - modm:architecture:spi: reference/module/modm-architecture-spi.md
+      - modm:architecture:spi.device: reference/module/modm-architecture-spi-device.md
+      - modm:architecture:uart: reference/module/modm-architecture-uart.md
+      - modm:architecture:unaligned: reference/module/modm-architecture-unaligned.md
+      - modm:board.disco-f469ni: reference/module/modm-board-disco-f469ni.md
+      - modm:build.cmake: reference/module/modm-build-cmake.md
+      - modm:build.scons: reference/module/modm-build-scons.md
+      - modm:cmsis: reference/module/modm-cmsis.md
+      - modm:cmsis:core: reference/module/modm-cmsis-core.md
+      - modm:cmsis:device: reference/module/modm-cmsis-device.md
+      - modm:cmsis:dsp: reference/module/modm-cmsis-dsp.md
+      - modm:communication: reference/module/modm-communication.md
+      - modm:communication:ros: reference/module/modm-communication-ros.md
+      - modm:communication:sab: reference/module/modm-communication-sab.md
+      - modm:communication:xpcc: reference/module/modm-communication-xpcc.md
+      - modm:container: reference/module/modm-container.md
+      - modm:debug: reference/module/modm-debug.md
+      - modm:docs: reference/module/modm-docs.md
+      - modm:driver: reference/module/modm-driver.md
+      - modm:driver:ad7280a: reference/module/modm-driver-ad7280a.md
+      - modm:driver:ad7928: reference/module/modm-driver-ad7928.md
+      - modm:driver:adc_sampler: reference/module/modm-driver-adc_sampler.md
+      - modm:driver:adns9800: reference/module/modm-driver-adns9800.md
+      - modm:driver:ads7843: reference/module/modm-driver-ads7843.md
+      - modm:driver:amsys5915: reference/module/modm-driver-amsys5915.md
+      - modm:driver:block.device: reference/module/modm-driver-block-device.md
+      - modm:driver:block.device:heap: reference/module/modm-driver-block-device-heap.md
+      - modm:driver:block.device:mirror: reference/module/modm-driver-block-device-mirror.md
+      - modm:driver:block.device:spi.flash: reference/module/modm-driver-block-device-spi-flash.md
+      - modm:driver:bme280: reference/module/modm-driver-bme280.md
+      - modm:driver:bmp085: reference/module/modm-driver-bmp085.md
+      - modm:driver:ds1302: reference/module/modm-driver-ds1302.md
+      - modm:driver:ds1631: reference/module/modm-driver-ds1631.md
+      - modm:driver:ds18b20: reference/module/modm-driver-ds18b20.md
+      - modm:driver:ea_dog: reference/module/modm-driver-ea_dog.md
+      - modm:driver:fat: reference/module/modm-driver-fat.md
+      - modm:driver:ft245: reference/module/modm-driver-ft245.md
+      - modm:driver:ft6x06: reference/module/modm-driver-ft6x06.md
+      - modm:driver:hclax: reference/module/modm-driver-hclax.md
+      - modm:driver:hd44780: reference/module/modm-driver-hd44780.md
+      - modm:driver:hmc58x: reference/module/modm-driver-hmc58x.md
+      - modm:driver:hmc6343: reference/module/modm-driver-hmc6343.md
+      - modm:driver:i2c.eeprom: reference/module/modm-driver-i2c-eeprom.md
+      - modm:driver:itg3200: reference/module/modm-driver-itg3200.md
+      - modm:driver:l3gd20: reference/module/modm-driver-l3gd20.md
+      - modm:driver:lawicel: reference/module/modm-driver-lawicel.md
+      - modm:driver:lis3.transport: reference/module/modm-driver-lis3-transport.md
+      - modm:driver:lis302dl: reference/module/modm-driver-lis302dl.md
+      - modm:driver:lis3dsh: reference/module/modm-driver-lis3dsh.md
+      - modm:driver:lm75: reference/module/modm-driver-lm75.md
+      - modm:driver:lsm303a: reference/module/modm-driver-lsm303a.md
+      - modm:driver:ltc2984: reference/module/modm-driver-ltc2984.md
+      - modm:driver:max6966: reference/module/modm-driver-max6966.md
+      - modm:driver:max7219: reference/module/modm-driver-max7219.md
+      - modm:driver:mcp23x17: reference/module/modm-driver-mcp23x17.md
+      - modm:driver:mcp2515: reference/module/modm-driver-mcp2515.md
+      - modm:driver:memory_bus: reference/module/modm-driver-memory_bus.md
+      - modm:driver:nokia5110: reference/module/modm-driver-nokia5110.md
+      - modm:driver:nrf24: reference/module/modm-driver-nrf24.md
+      - modm:driver:parallel_tft_display: reference/module/modm-driver-parallel_tft_display.md
+      - modm:driver:pca8574: reference/module/modm-driver-pca8574.md
+      - modm:driver:pca9535: reference/module/modm-driver-pca9535.md
+      - modm:driver:pca9685: reference/module/modm-driver-pca9685.md
+      - modm:driver:siemens_s65: reference/module/modm-driver-siemens_s65.md
+      - modm:driver:siemens_s75: reference/module/modm-driver-siemens_s75.md
+      - modm:driver:ssd1306: reference/module/modm-driver-ssd1306.md
+      - modm:driver:tcs3414: reference/module/modm-driver-tcs3414.md
+      - modm:driver:tcs3472: reference/module/modm-driver-tcs3472.md
+      - modm:driver:tmp102: reference/module/modm-driver-tmp102.md
+      - modm:driver:tmp175: reference/module/modm-driver-tmp175.md
+      - modm:driver:vl53l0: reference/module/modm-driver-vl53l0.md
+      - modm:driver:vl6180: reference/module/modm-driver-vl6180.md
+      - modm:fatfs: reference/module/modm-fatfs.md
+      - modm:freertos: reference/module/modm-freertos.md
+      - modm:io: reference/module/modm-io.md
+      - modm:math: reference/module/modm-math.md
+      - modm:math:filter: reference/module/modm-math-filter.md
+      - modm:math:geometry: reference/module/modm-math-geometry.md
+      - modm:math:interpolation: reference/module/modm-math-interpolation.md
+      - modm:math:matrix: reference/module/modm-math-matrix.md
+      - modm:math:saturated: reference/module/modm-math-saturated.md
+      - modm:math:utils: reference/module/modm-math-utils.md
+      - modm:platform: reference/module/modm-platform.md
+      - modm:platform:1-wire.bitbang: reference/module/modm-platform-1-wire-bitbang.md
+      - modm:platform:adc: reference/module/modm-platform-adc.md
+      - modm:platform:adc:1: reference/module/modm-platform-adc-1.md
+      - modm:platform:adc:2: reference/module/modm-platform-adc-2.md
+      - modm:platform:adc:3: reference/module/modm-platform-adc-3.md
+      - modm:platform:can: reference/module/modm-platform-can.md
+      - modm:platform:can.common: reference/module/modm-platform-can-common.md
+      - modm:platform:can:1: reference/module/modm-platform-can-1.md
+      - modm:platform:can:2: reference/module/modm-platform-can-2.md
+      - modm:platform:clock: reference/module/modm-platform-clock.md
+      - modm:platform:clock.cortex: reference/module/modm-platform-clock-cortex.md
+      - modm:platform:core: reference/module/modm-platform-core.md
+      - modm:platform:dma: reference/module/modm-platform-dma.md
+      - modm:platform:dma:1: reference/module/modm-platform-dma-1.md
+      - modm:platform:dma:2: reference/module/modm-platform-dma-2.md
+      - modm:platform:fault.cortex: reference/module/modm-platform-fault-cortex.md
+      - modm:platform:gpio: reference/module/modm-platform-gpio.md
+      - modm:platform:gpio.common: reference/module/modm-platform-gpio-common.md
+      - modm:platform:i2c: reference/module/modm-platform-i2c.md
+      - modm:platform:i2c.bitbang: reference/module/modm-platform-i2c-bitbang.md
+      - modm:platform:i2c:1: reference/module/modm-platform-i2c-1.md
+      - modm:platform:i2c:2: reference/module/modm-platform-i2c-2.md
+      - modm:platform:i2c:3: reference/module/modm-platform-i2c-3.md
+      - modm:platform:id: reference/module/modm-platform-id.md
+      - modm:platform:random: reference/module/modm-platform-random.md
+      - modm:platform:spi: reference/module/modm-platform-spi.md
+      - modm:platform:spi.bitbang: reference/module/modm-platform-spi-bitbang.md
+      - modm:platform:spi:1: reference/module/modm-platform-spi-1.md
+      - modm:platform:spi:2: reference/module/modm-platform-spi-2.md
+      - modm:platform:spi:3: reference/module/modm-platform-spi-3.md
+      - modm:platform:spi:4: reference/module/modm-platform-spi-4.md
+      - modm:platform:spi:5: reference/module/modm-platform-spi-5.md
+      - modm:platform:spi:6: reference/module/modm-platform-spi-6.md
+      - modm:platform:timer: reference/module/modm-platform-timer.md
+      - modm:platform:timer:1: reference/module/modm-platform-timer-1.md
+      - modm:platform:timer:10: reference/module/modm-platform-timer-10.md
+      - modm:platform:timer:11: reference/module/modm-platform-timer-11.md
+      - modm:platform:timer:12: reference/module/modm-platform-timer-12.md
+      - modm:platform:timer:13: reference/module/modm-platform-timer-13.md
+      - modm:platform:timer:14: reference/module/modm-platform-timer-14.md
+      - modm:platform:timer:2: reference/module/modm-platform-timer-2.md
+      - modm:platform:timer:3: reference/module/modm-platform-timer-3.md
+      - modm:platform:timer:4: reference/module/modm-platform-timer-4.md
+      - modm:platform:timer:5: reference/module/modm-platform-timer-5.md
+      - modm:platform:timer:6: reference/module/modm-platform-timer-6.md
+      - modm:platform:timer:7: reference/module/modm-platform-timer-7.md
+      - modm:platform:timer:8: reference/module/modm-platform-timer-8.md
+      - modm:platform:timer:9: reference/module/modm-platform-timer-9.md
+      - modm:platform:uart: reference/module/modm-platform-uart.md
+      - modm:platform:uart.spi: reference/module/modm-platform-uart-spi.md
+      - modm:platform:uart.spi:1: reference/module/modm-platform-uart-spi-1.md
+      - modm:platform:uart.spi:2: reference/module/modm-platform-uart-spi-2.md
+      - modm:platform:uart.spi:3: reference/module/modm-platform-uart-spi-3.md
+      - modm:platform:uart.spi:6: reference/module/modm-platform-uart-spi-6.md
+      - modm:platform:uart:1: reference/module/modm-platform-uart-1.md
+      - modm:platform:uart:2: reference/module/modm-platform-uart-2.md
+      - modm:platform:uart:3: reference/module/modm-platform-uart-3.md
+      - modm:platform:uart:4: reference/module/modm-platform-uart-4.md
+      - modm:platform:uart:5: reference/module/modm-platform-uart-5.md
+      - modm:platform:uart:6: reference/module/modm-platform-uart-6.md
+      - modm:platform:uart:7: reference/module/modm-platform-uart-7.md
+      - modm:platform:uart:8: reference/module/modm-platform-uart-8.md
+      - modm:processing: reference/module/modm-processing.md
+      - modm:processing:protothread: reference/module/modm-processing-protothread.md
+      - modm:processing:resumable: reference/module/modm-processing-resumable.md
+      - modm:processing:rtos: reference/module/modm-processing-rtos.md
+      - modm:processing:scheduler: reference/module/modm-processing-scheduler.md
+      - modm:processing:timer: reference/module/modm-processing-timer.md
+      - modm:ros: reference/module/modm-ros.md
+      - modm:test: reference/module/modm-test.md
+      - modm:test:architecture: reference/module/modm-test-architecture.md
+      - modm:test:communication: reference/module/modm-test-communication.md
+      - modm:test:container: reference/module/modm-test-container.md
+      - modm:test:driver: reference/module/modm-test-driver.md
+      - modm:test:io: reference/module/modm-test-io.md
+      - modm:test:math: reference/module/modm-test-math.md
+      - modm:test:platform: reference/module/modm-test-platform.md
+      - modm:test:platform:gpio: reference/module/modm-test-platform-gpio.md
+      - modm:test:processing: reference/module/modm-test-processing.md
+      - modm:test:ui: reference/module/modm-test-ui.md
+      - modm:tlsf: reference/module/modm-tlsf.md
+      - modm:ui: reference/module/modm-ui.md
+      - modm:ui:animation: reference/module/modm-ui-animation.md
+      - modm:ui:button: reference/module/modm-ui-button.md
+      - modm:ui:color: reference/module/modm-ui-color.md
+      - modm:ui:display: reference/module/modm-ui-display.md
+      - modm:ui:gui: reference/module/modm-ui-gui.md
+      - modm:ui:led: reference/module/modm-ui-led.md
+      - modm:ui:menu: reference/module/modm-ui-menu.md
+      - modm:ui:time: reference/module/modm-ui-time.md
+      - modm:unittest: reference/module/modm-unittest.md
+      - modm:utils: reference/module/modm-utils.md
+# /moduletable
