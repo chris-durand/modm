@@ -164,6 +164,14 @@ public:
 	}
 
 public:
+	#ifdef __DOXYGEN__
+	struct BitBang;
+	%% for signal_group in signals.values()
+		%% for signal in signal_group
+	struct {{ signal.name }};
+		%% endfor
+	%% endfor
+	#else
 	template< Peripheral peripheral >
 	struct BitBang { static void connect();
 		static_assert(
@@ -180,8 +188,10 @@ public:
 			"Gpio{{ port ~ pin }}::{{ signal_name }} only connects to {% for signal in signal_group %}{{signal.driver}}{% if not loop.last %} or {% endif %}{% endfor %}!");
 	};
 	%% endfor
+	#endif
 };
 
+#ifndef __DOXYGEN__
 template<>
 struct Gpio{{ port ~ pin }}::BitBang<Peripheral::BitBang>
 {
@@ -211,6 +221,7 @@ struct Gpio{{ port ~ pin }}::{{ signal.name }}<Peripheral::{{ signal.driver }}>
 };
 	%% endfor
 %% endfor
+#endif
 
 } // namespace platform
 

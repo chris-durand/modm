@@ -11,15 +11,25 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 # -----------------------------------------------------------------------------
 
+
 def init(module):
     module.parent = "processing"
     module.name = "resumable"
+    module.description = FileReader("doc_resumable.md")
 
 def prepare(module, options):
     module.depends(":architecture:assert")
+
+    module.add_option(
+        BooleanOption(
+            name="check_nesting_depth",
+            description=FileReader("option/check_nesting_depth.md"),
+            default=True))
+
     return True
 
 def build(env):
     env.outbasepath = "modm/src/modm/processing/resumable"
-    env.copy(".", ignore=env.ignore_patterns("*.lb"))
+    env.copy(".", ignore=env.ignore_patterns("*.lb", "*.md", "*.in"))
     env.copy("../resumable.hpp")
+    env.template("nested_resumable.hpp.in")
