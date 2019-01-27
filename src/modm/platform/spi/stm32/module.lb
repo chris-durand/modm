@@ -60,6 +60,8 @@ def prepare(module, options):
         return False
 
     module.depends(
+        ":architecture:atomic",
+        ":architecture:interrupt",
         ":architecture:register",
         ":architecture:spi",
         ":cmsis:device",
