@@ -99,7 +99,7 @@ modm::platform::SpiBidiMaster{{ id }}::write(uint8_t data)
 		SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Output);
 
 		// start SPI transaction
-		SpiHal{{ id }}::setSpiTransactionEnabled(true);
+		// SpiHal{{ id }}::setSpiTransactionEnabled(true);
 
 		// start transfer by copying data into register
 		SpiHal{{ id }}::write(data);
@@ -117,7 +117,7 @@ modm::platform::SpiBidiMaster{{ id }}::write(uint8_t data)
 	}
 
 	// stop SPI transaction
-	SpiHal{{ id }}::setSpiTransactionEnabled(false);
+	// SpiHal{{ id }}::setSpiTransactionEnabled(false);
 
 	// transfer finished
 	state &= ~Bit0;
@@ -141,14 +141,14 @@ modm::platform::SpiBidiMaster{{ id }}::read()
 			SpiHal{{ id }}::read(dummy);
 		}
 
-		// set read mode
-		SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Input);
-
 		readCount = 1;
 		SpiHal{{ id }}::enableInterrupt(SpiHal{{ id }}::Interrupt::RxBufferNotEmpty);
 
+		// set read mode
+		SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Input);
+
 		// start transfer
-		SpiHal{{ id }}::setSpiTransactionEnabled(true);
+		// SpiHal{{ id }}::setSpiTransactionEnabled(true);
 
 		// set LSB = Bit0
 		state |= Bit1;
@@ -250,7 +250,7 @@ modm::platform::SpiBidiMaster{{ id }}::write(const uint8_t* tx, std::size_t leng
 			SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Output);
 
 			// start SPI transaction
-			SpiHal{{ id }}::setSpiTransactionEnabled(true);
+			// SpiHal{{ id }}::setSpiTransactionEnabled(true);
 
 			// initialize index and check range
 			index = 0;
@@ -272,8 +272,8 @@ modm::platform::SpiBidiMaster{{ id }}::write(const uint8_t* tx, std::size_t leng
 			if (SpiHal{{ id }}::isBusy())
 				return {modm::rf::Running};
 
-			SpiHal{{ id }}::setSpiTransactionEnabled(false);
-			//SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Input);
+			// SpiHal{{ id }}::setSpiTransactionEnabled(false);
+			// SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Input);
 
 			// clear the state
 			state &= ~Bit2;
@@ -300,16 +300,16 @@ modm::platform::SpiBidiMaster{{ id }}::read(uint8_t* rx, std::size_t length)
 			SpiHal{{ id }}::read(dummy);
 		}
 
-		// set read mode
-		SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Input);
-
 		readCount = length;
 		index = 0;
 
 		SpiHal{{ id }}::enableInterrupt(SpiHal{{ id }}::Interrupt::RxBufferNotEmpty);
 
+		// set read mode
+		SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Input);
+
 		// start transfer
-		SpiHal{{ id }}::setSpiTransactionEnabled(true);
+		// SpiHal{{ id }}::setSpiTransactionEnabled(true);
 
 		state |= Bit3;
 	}
@@ -341,7 +341,8 @@ MODM_ISR(SPI{{ id }})
 			uint8_t value = 0;
 			SpiHal{{ id }}::read(value);
 			if(count == 1) {
-				SpiHal{{ id }}::setSpiTransactionEnabled(false);
+				// set to output to stop reading
+				SpiHal{{ id }}::setDataDirection(SpiHal{{ id }}::DataDirection::Output);
 				SpiHal{{ id }}::disableInterrupt(SpiHal{{ id }}::Interrupt::RxBufferNotEmpty);
 			}
 			rxBuffer.push(value);
