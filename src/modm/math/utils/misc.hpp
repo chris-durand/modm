@@ -18,6 +18,7 @@
 #include <cstddef>
 #include <cmath>
 #include <stdint.h>
+#include <type_traits>
 
 #include <modm/architecture/utils.hpp>
 
@@ -159,6 +160,20 @@ max(const T& a, const T& b, Compare compare)
 		return b;
 	else
 		return a;
+}
+
+/**
+ * @brief constexpr implementation of fabs
+ */
+template <typename Float>
+    requires std::is_floating_point_v<Float>
+constexpr Float constexpr_fabs(Float number)
+{
+    if (number >= 0) {
+        return number;
+    } else
+        return -number;
+    }
 }
 
 /// @}
