@@ -250,16 +250,18 @@ can easily configure them for you specific needs.
 </tr><tr>
 <td align="center">SK9822</td>
 <td align="center">SSD1306</td>
+<td align="center">STTS22H</td>
 <td align="center">SX1276</td>
 <td align="center">TCS3414</td>
 <td align="center">TCS3472</td>
-<td align="center">TLC594X</td>
 </tr><tr>
+<td align="center">TLC594X</td>
 <td align="center">TMP102</td>
 <td align="center">TMP175</td>
 <td align="center">VL53L0</td>
 <td align="center">VL6180</td>
 <td align="center">WS2812</td>
+</tr><tr>
 </tr>
 </table>
 <!--/drivertable-->
