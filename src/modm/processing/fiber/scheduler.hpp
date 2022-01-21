@@ -22,6 +22,7 @@ class Scheduler
 {
 	friend class ::modm::Fiber;
 	friend class Waitable;
+	friend class ExecuteBlocking;
 	friend void yield();
 	Scheduler(const Scheduler&) = delete;
 	Scheduler() = delete;
@@ -31,7 +32,7 @@ protected:
 	static inline Fiber* last{nullptr};
 	/// Current running fiber
 	static inline Fiber* current{nullptr};
-
+	static unsigned blockingCounter{};
 public:
 	// Should be called by the main() function.
 	static inline bool
@@ -100,9 +101,16 @@ protected:
 	}
 };
 
+struct ExecuteBlocking
+{
+	ExecuteBlocking() { ++Scheduler::blockingCounter; }
+	~ExecuteBlocking() { --Scheduler::blockingCounter; }
+};
+
 inline void
 yield()
 {
+	if (blockingCounter != 0) return;
 	if (Scheduler::current == nullptr) return;
 	Fiber* next = Scheduler::current->next;
 	if (next == Scheduler::current) return;

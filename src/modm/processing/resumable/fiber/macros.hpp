@@ -43,8 +43,10 @@
 
 #define RF_CALL(...) __VA_ARGS__
 
-// TODO: implement blocking
-#define RF_CALL(...) __VA_ARGS__
+#define RF_CALL_BLOCKING(...) ({ \
+        modm::fiber::ExecuteBlocking blocking; \
+        __VA_ARGS__; \
+    })
 
 #define RF_RETURN_CALL(...) return __VA_ARGS__
 
