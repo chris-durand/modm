@@ -19,19 +19,32 @@ def init(module):
 def prepare(module, options):
     module.depends(":architecture:assert")
 
-    module.add_option(
-        BooleanOption(
-            name="check_nesting_depth",
-            default=True,
-            description=descr_nesting_depth))
+    if not options[":processing:resumable:__use_fibers"]:
+        module.add_option(
+            BooleanOption(
+                name="check_nesting_depth",
+                default=True,
+                description=descr_nesting_depth))
+
+    if options[":__fibers"]:
+        module.add_option(
+            BooleanOption(
+                name="__use_fibers",
+                default=False,
+                description="Implement resumable functions with fibers for compatibility with drivers"))
 
     return True
 
 def build(env):
     env.outbasepath = "modm/src/modm/processing/resumable"
-    env.copy(".", ignore=env.ignore_files("*.md", "*.in"))
+    if env.get(":processing:resumable:__use_fibers", False):
+        env.copy("fiber/nested_resumable.hpp", "nested_resumable.hpp")
+        env.copy("fiber/resumable.hpp", "resumable.hpp")
+        env.copy("fiber/macros.hpp", "macros.hpp")
+    else:
+        env.copy(".", ignore=env.ignore_files("*.md", "*.in"))
+        env.template("nested_resumable.hpp.in")
     env.copy("../resumable.hpp")
-    env.template("nested_resumable.hpp.in")
 
 
 # ============================ Option Descriptions ============================
