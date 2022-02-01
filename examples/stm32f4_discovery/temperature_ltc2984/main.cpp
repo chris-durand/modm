@@ -72,6 +72,9 @@ public:
 	ThreadOne() :
 		tempSensor()
 	{
+		tempSensor.attachUserConfigurationHandler([]() {
+			SpiMaster::setBaudrate<Board::SystemClock, 1.3125_MHz>();
+		});
 	}
 
 	bool
