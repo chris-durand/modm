@@ -649,10 +649,11 @@ We have out-of-box support for many development boards including documentation.
 <td align="center"><a href="https://modm.io/reference/config/modm-samd21-mini">SAMD21-MINI</a></td>
 </tr><tr>
 <td align="center"><a href="https://modm.io/reference/config/modm-samg55-xplained-pro">SAMG55-XPLAINED-PRO</a></td>
+<td align="center"><a href="https://modm.io/reference/config/modm-samv71-xplained-ultra">SAMV71-XPLAINED-ULTRA</a></td>
 <td align="center"><a href="https://modm.io/reference/config/modm-srxe">Smart Response XE</a></td>
 <td align="center"><a href="https://modm.io/reference/config/modm-stm32_f4ve">STM32-F4VE</a></td>
-<td align="center"><a href="https://modm.io/reference/config/modm-stm32f030_demo">STM32F030-DEMO</a></td>
 </tr><tr>
+<td align="center"><a href="https://modm.io/reference/config/modm-stm32f030_demo">STM32F030-DEMO</a></td>
 </tr>
 </table>
 <!--/bsptable-->
