@@ -42,11 +42,12 @@ struct SystemClock
 		GenericClockController::enableGenerator<ClockGen32kHz, ClockSource::Xosc32k>();
 
 		// generate 48 MHz from 32768 Hz crystal reference
-		GenericClockController::connect<ClockPeripheral::Dfll48>(ClockGen32kHz);
-		GenericClockController::enableDfll48mClosedLoop<Xosc32k>();
+		GenericClockController::connect<ClockPeripheral::Fdpll>(ClockGen32kHz);
+		GenericClockController::connect<ClockPeripheral::Fdpll32k>(ClockGen32kHz);
+		GenericClockController::enableDpll<Xosc32Source<32768_Hz>, 48_MHz>();
 
 		GenericClockController::setFlashLatency<Frequency>();
-		GenericClockController::setSystemClock<ClockSource::Dfll48m>();
+		GenericClockController::setSystemClock<ClockSource::Dpll96m>();
 		GenericClockController::updateCoreFrequency<Frequency>();
 
 		GenericClockController::connect<ClockPeripheral::Usb>(ClockGenerator::System);
