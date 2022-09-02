@@ -5,6 +5,7 @@
  * Copyright (c) 2011, 2013-2017, Niklas Hauser
  * Copyright (c) 2013-2014, 2016, Kevin Läufer
  * Copyright (c) 2014, Sascha Schade
+ * Copyright (c) 2022, Christopher Durand
  *
  * This file is part of the modm project.
  *
@@ -343,6 +344,16 @@ public:
 			Value compareValue, PinState out = PinState::Enable,
 			bool enableComparePreload = true);
 
+	template<typename Signal>
+	static void
+	configureOutputChannel(OutputCompareMode_t mode,
+			Value compareValue, PinState out = PinState::Enable,
+			bool enableComparePreload = true)
+	{
+		constexpr auto channel = signalToChannel<Peripheral::Tim{{id}}, Signal>();
+		configureOutputChannel(channel, mode, compareValue, out, enableComparePreload);
+	}
+
 	/// Switch to Pwm Mode 2
 	///
 	/// While upcounting channel will be active as long as the time value is
@@ -494,10 +505,19 @@ public:
 	%% endif
 
 	%% endif
+
 	static inline void
 	setCompareValue(uint32_t channel, Value value)
 	{
 		*(&TIM{{ id }}->CCR1 + (channel - 1)) = value;
+	}
+
+	template<typename Signal>
+	static void
+	setCompareValue(Value value)
+	{
+		constexpr auto channel = signalToChannel<Peripheral::Tim{{id}}, Signal>();
+		setCompareValue(channel, value);
 	}
 
 	static inline Value
