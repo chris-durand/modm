@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2018, Niklas Hauser
+# Copyright (c) 2022, Christopher Durand
+#
+# This file is part of the modm project.
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+# -----------------------------------------------------------------------------
+
+
+def init(module):
+    module.name = ":driver:bmp280"
+    module.description = """\
+# BMP280 Pressure Sensor
+
+The BMP280 is a high precision digital temperature and pressure sensor
+with I2C and SPI interface.
+
+"""
+
+def prepare(module, options):
+    module.depends(
+        ":architecture:i2c.device",
+        ":architecture:spi.device",
+        ":architecture:register",
+        ":math:utils",
+        ":debug",
+        ":processing:resumable")
+    return True
+
+def build(env):
+    env.outbasepath = "modm/src/modm/driver/pressure"
+    env.copy("bmp280.hpp")
+    env.copy("bmp280_impl.hpp")
+    env.copy("bmp280_data.hpp")
+    env.copy("bmp280_data_impl.hpp")
+    env.copy("bmp280_transport.hpp")
+    env.copy("bmp280_transport_impl.hpp")
