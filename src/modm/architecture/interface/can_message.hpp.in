@@ -113,9 +113,16 @@ struct Message
 	inline void
 	setLength(uint8_t inLength)
 	{
-		uint8_t inDlc = 0;
-		while (dlcConversionTable[inDlc] < std::min<uint8_t>(inLength, 64)) inDlc++;
-		setDataLengthCode(inDlc);
+		if constexpr (capacity <= 8)
+		{
+			length = dlc = std::min<uint8_t>(inLength, capacity);
+		} 
+		else
+		{
+			uint8_t inDlc = 0;
+			while (dlcConversionTable[inDlc] < std::min<uint8_t>(inLength, capacity)) inDlc++;
+			setDataLengthCode(inDlc);
+		}
 	}
 
 	inline uint8_t
