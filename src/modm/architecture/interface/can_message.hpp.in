@@ -32,12 +32,20 @@ struct Message
 	}
 
 	inline Message(uint32_t inIdentifier, uint8_t inLength, const uint64_t &inData, bool extended = false) :
-		Message(inIdentifier, inLength)
+		identifier(inIdentifier), length(std::min(inLength, uint8_t(8)))
 	{
 		flags.extended = extended;
 		const uint8_t *inDataB = reinterpret_cast<const uint8_t *>(&inData);
-		for (uint8_t ii = 0; ii < dlcConversionTable[length]; ++ii)
+		for (uint8_t ii = 0; ii < length; ++ii)
  			data[ii] = inDataB[length - ii - 1];
+	}
+	
+	inline Message(uint32_t inIdentifier, uint8_t inLength, const uint8_t *inData, bool extended = false) :
+		Message(inIdentifier, inLength)
+	{
+		flags.extended = extended;
+		for (uint8_t ii = 0; ii < length; ++ii)
+ 			data[ii] = inData[length - ii - 1];
 	}
 
 	inline uint32_t
