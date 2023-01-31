@@ -37,15 +37,15 @@ struct Message
 		flags.extended = extended;
 		const uint8_t *inDataB = reinterpret_cast<const uint8_t *>(&inData);
 		for (uint8_t ii = 0; ii < length; ++ii)
- 			data[ii] = inDataB[length - ii - 1];
+			data[ii] = inDataB[length - ii - 1];
 	}
-	
+
 	inline Message(uint32_t inIdentifier, uint8_t inLength, const uint8_t *inData, bool extended = false) :
 		Message(inIdentifier, inLength)
 	{
 		flags.extended = extended;
 		for (uint8_t ii = 0; ii < length; ++ii)
- 			data[ii] = inData[ii];
+			data[ii] = inData[ii];
 	}
 
 	inline uint32_t
@@ -124,7 +124,7 @@ struct Message
 		if constexpr (capacity <= 8)
 		{
 			length = dlc = std::min<uint8_t>(inLength, capacity);
-		} 
+		}
 		else
 		{
 			uint8_t inDlc = 0;
