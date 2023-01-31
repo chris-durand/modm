@@ -14,8 +14,7 @@
 #ifndef MODM_CAN_MESSAGE_HPP
 #define MODM_CAN_MESSAGE_HPP
 
-#include <stdint.h>
-#include <string.h>  // strlen
+#include <cstdint>
 #include <algorithm>
 #include <modm/architecture/utils.hpp>
 
@@ -187,7 +186,7 @@ public:
 				std::equal(data, data + getLength(), rhs.data));
 	}
 
-	inline void
+	inline modm::can::Message&
 	operator = (const modm::can::Message& rhs)
 	{
 		this->identifier     = rhs.identifier;
@@ -198,6 +197,7 @@ public:
 		this->flags.rtr      = rhs.flags.rtr;
 		this->flags.extended = rhs.flags.extended;
 		std::copy(std::begin(rhs.data), std::end(rhs.data), std::begin(this->data));
+		return *this;
 	}
 
 	inline bool
