@@ -111,11 +111,18 @@ struct Message
 	inline void
 	setDataLengthCode(uint8_t inDlc)
 	{
-		while (dlcConversionTable[inDlc] > capacity) inDlc--;
+		if constexpr (capacity <= 8)
+		{
+			length = dlc = std::min<uint8_t>(inLength, capacity);
+		}
+		else
+		{
+			while (dlcConversionTable[inDlc] > capacity) inDlc--;
 
-		dlc = inDlc;
-		length = dlcConversionTable[inDlc];
-		if (dlc > 8) setFlexibleData();
+			dlc = inDlc;
+			length = dlcConversionTable[inDlc];
+			if (dlc > 8) setFlexibleData();
+		}
 	}
 
 	inline void
