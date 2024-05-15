@@ -83,7 +83,7 @@ def init(module):
 
 def prepare(module, options):
     device = options[":target"]
-    if not device.has_driver("fdcan:stm32"):
+    if not device.has_driver("fdcan:stm32*"):
         return False
 
     module.depends(
@@ -113,6 +113,11 @@ def build(env):
     env.substitutions.update(global_properties)
     env.outbasepath = "modm/src/modm/platform/can"
 
-    env.copy("message_ram.hpp")
+    target = env[":target"].identifier
+    if target.family == "h7":
+        env.copy("../sam-mcan/message_ram.hpp", "message_ram.hpp")
+    else:
+        env.copy("message_ram.hpp")
+
     if len(global_properties["shared_irqs"]) > 0:
         env.template("can_shared_irqs.cpp.in")

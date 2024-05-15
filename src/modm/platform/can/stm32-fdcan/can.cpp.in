@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <cstring>
 #include <optional>
+#include <tuple>
 
 #include <modm/architecture/driver/atomic/queue.hpp>
 #include <modm/platform/clock/rcc.hpp>
@@ -155,6 +156,36 @@ sendMsg(const modm::can::Message& message)
 	return true;
 }
 
+// Convert message RAM element size to setting bits in RXESC/TXESC registers
+template<int size>
+constexpr unsigned elementSizeToSetting()
+{
+	constexpr std::array settings = {
+		8,  // 000
+		12, // 001
+		16, // 010
+		20, // 011
+		24, // 100
+		32, // 101
+		48, // 110
+		64  // 111
+	};
+
+	// needed for the function to be constexpr
+	const auto index = [](auto& range, auto value) -> std::optional<int> {
+		const auto it = std::ranges::find(range, value);
+		if (it == std::end(range))
+			return std::nullopt;
+		return it - std::begin(range);
+	};
+
+	constexpr int headerSize = 8;
+	constexpr auto setting = index(settings, size - headerSize);
+	static_assert(setting, "Invalid message ram element size");
+
+	return setting.value();
+}
+
 }
 
 void
@@ -192,6 +223,39 @@ modm::platform::Fdcan{{ id }}::initializeWithPrescaler(
 
 	configureInterrupts(interruptPriority);
 
+%% if target.family == "h7"
+	const uintptr_t messageRamBase = 0x4000'AC00;
+	MessageRam::setRamBase(messageRamBase);
+	// reject non-matching frames
+	{{ reg }}->GFC = FDCAN_GFC_ANFE | FDCAN_GFC_ANFS;
+
+	{{ reg }}->RXF0C = (overwriteOnOverrun ? FDCAN_RXF0C_F0OM : 0u) |
+		((MessageRam::RxFifo0Elements << FDCAN_RXF0C_F0S_Pos) & FDCAN_RXF0C_F0S_Msk) |
+		((MessageRam::RxFifo0Offset & FDCAN_RXF0C_F0SA_Msk));
+
+	{{ reg }}->RXF1C = (overwriteOnOverrun ? FDCAN_RXF1C_F1OM : 0u) |
+		((MessageRam::RxFifo1Elements << FDCAN_RXF1C_F1S_Pos) & FDCAN_RXF1C_F1S_Msk) |
+		((MessageRam::RxFifo1Offset & FDCAN_RXF1C_F1SA_Msk));
+
+	{{ reg }}->RXESC = (elementSizeToSetting<MessageRam::RxBufferElementSize>() << FDCAN_RXESC_RBDS_Pos) |
+		(elementSizeToSetting<MessageRam::RxFifo0ElementSize>() << FDCAN_RXESC_F0DS_Pos) |
+		(elementSizeToSetting<MessageRam::RxFifo1ElementSize>() << FDCAN_RXESC_F1DS_Pos);
+
+	{{ reg }}->TXESC = (elementSizeToSetting<MessageRam::TxFifoElementSize>() << FDCAN_TXESC_TBDS_Pos);
+
+	{{ reg }}->RXBC = MessageRam::RxBufferOffset;
+	{{ reg }}->SIDFC = ((MessageRam::StandardFilterCount << FDCAN_SIDFC_LSS_Pos) & FDCAN_SIDFC_LSS_Msk) |
+						(MessageRam::FilterListStandardOffset & FDCAN_SIDFC_FLSSA_Msk);
+	{{ reg }}->XIDFC = ((MessageRam::ExtendedFilterCount << FDCAN_XIDFC_LSE_Pos) & FDCAN_XIDFC_LSE_Msk) |
+						(MessageRam::FilterListExtendedOffset & FDCAN_XIDFC_FLESA_Msk);
+
+	{{ reg }}->TXBC = FDCAN_TXBC_TFQM |
+		((MessageRam::TxFifoElements << FDCAN_TXBC_TFQS_Pos) & FDCAN_TXBC_TFQS_Msk) |
+		MessageRam::TxFifoOffset;
+
+	{{ reg }}->TXEFC = ((MessageRam::TxEventFifoEntries << FDCAN_TXEFC_EFS_Pos) & FDCAN_TXEFC_EFS_Msk) |
+		MessageRam::TxEventFifoOffset;
+%% else
 	{{ reg }}->RXGFC = overwriteOnOverrun ? (FDCAN_RXGFC_F1OM | FDCAN_RXGFC_F0OM) : 0;
 
 	// enable all filters, reject non-matching frames
@@ -199,6 +263,7 @@ modm::platform::Fdcan{{ id }}::initializeWithPrescaler(
 
 	// Tx buffer: queue mode
 	{{ reg }}->TXBC = FDCAN_TXBC_TFQM;
+%% endif
 
 	// Enable bit rate switching and CANFD frame format
 	if(fdDataTimings) {
@@ -344,7 +409,11 @@ modm::platform::Fdcan{{ id }}::configureInterrupts(uint32_t interruptPriority)
 	// enable both interrupts lines (0 and 1)
 	{{ reg }}->ILE = FDCAN_ILE_EINT1 | FDCAN_ILE_EINT0;
 	// assign receive interrupts to line 1
+%% if target.family == "h7"
+	{{ reg }}->ILS = (FDCAN_ILS_RF0NL | FDCAN_ILS_RF1NL);
+%% else
 	{{ reg }}->ILS = (FDCAN_ILS_RXFIFO0 | FDCAN_ILS_RXFIFO1);
+%% endif
 
 	{{ reg }}->IE = 0;
 %% if options["buffer.tx"] > 0
