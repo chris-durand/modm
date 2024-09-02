@@ -29,6 +29,8 @@ using namespace modm::literals;
 /// STM32H743 running at 400MHz from the external 8MHz HSE
 struct SystemClock
 {
+	static constexpr uint32_t Hse = 8_MHz;
+
 	// NOTE: revision Y at 400MHz, only revision V runs at 480Mhz!!!
 	static constexpr uint32_t SysClk = 400_MHz;
 	// Max 400MHz or 480MHz
@@ -70,8 +72,8 @@ struct SystemClock
 
 	static constexpr uint32_t LpUart1 = Apb4;
 
-	static constexpr uint32_t Can1 = Apb1;
-	static constexpr uint32_t Can2 = Apb1;
+	static constexpr uint32_t Fdcan1 = Hse;
+	static constexpr uint32_t Fdcan2 = Hse;
 
 	static constexpr uint32_t I2c1 = Apb1;
 	static constexpr uint32_t I2c2 = Apb1;

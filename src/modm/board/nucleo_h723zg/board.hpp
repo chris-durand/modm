@@ -30,6 +30,8 @@ using namespace modm::literals;
 /// STM32H723ZG running at 550MHz from PLL clock generated from 8 MHz HSE
 struct SystemClock
 {
+	static constexpr uint32_t Hse = 8_MHz;
+
 	// Max 550MHz
 	static constexpr uint32_t SysClk = 550_MHz;
 	static constexpr uint32_t Pll1Q = SysClk / 4;
@@ -74,8 +76,8 @@ struct SystemClock
 
 	static constexpr uint32_t LpUart1 = Apb4;
 
-	static constexpr uint32_t Can1 = Apb1;
-	static constexpr uint32_t Can2 = Apb1;
+	static constexpr uint32_t Fdcan1 = Hse;
+	static constexpr uint32_t Fdcan2 = Hse;
 
 	static constexpr uint32_t I2c1 = Apb1;
 	static constexpr uint32_t I2c2 = Apb1;
