@@ -122,7 +122,7 @@ class Instance(Module):
         properties["shared_irq_it0"] = False
         properties["shared_irq_it1"] = False
 
-        properties["message_ram_length_words"] = 2560 if device.identifier.family == "h7" else 1696
+        properties["message_ram_length_words"] = 2560 if device.identifier.family == "h7" else 212
 
         if device.identifier.family == "g0":
             shared_irq_it0 = get_shared_irq(device, "FDCAN_IT0")
