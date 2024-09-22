@@ -210,8 +210,9 @@ modm::platform::Fdcan{{ id }}::initializeWithPrescaler(
 %% endif
 
 	auto const messageRamBaseWords = modm::platform::fdcan::Fdcan{{id}}MessageRamBaseWords;
+	auto const messageRamBoundWords = modm::platform::fdcan::Fdcan{{id}}MessageRamBoundWords;
 
-	static_assert(messageRamBaseWords + MessageRam::Config.totalSectionWords() <= {{message_ram_length_words}});
+	static_assert(messageRamBaseWords + MessageRam::Config.totalSectionWords() <= messageRamBoundWords);
 	static_assert(MessageRam::Config.txFifoSectionOffset() + MessageRam::Config.txFifoSectionWords() == MessageRam::Config.totalSectionWords());
 
 	MessageRam::setRamBase(SRAMCAN_BASE + (messageRamBaseWords * MessageRam::RamWordSize));

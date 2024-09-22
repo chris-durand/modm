@@ -26,6 +26,14 @@ FIFO: transmit frames in the order they were enqueued.
 Priority: transmit the frame with the lowest arbitration ID first.
 """
 
+message_ram_option_legacy_values = {
+    "message_ram.standard_filter_count": 28,
+    "message_ram.extended_filter_count": 8,
+    "message_ram.rx_fifo_0_elements": 3,
+    "message_ram.rx_fifo_1_elements": 3,
+    "message_ram.tx_fifo_elements": 3,
+}
+
 def load_options(module, options):
     module.add_option(
         NumericOption(
@@ -122,7 +130,7 @@ class Instance(Module):
         properties["shared_irq_it0"] = False
         properties["shared_irq_it1"] = False
 
-        properties["message_ram_length_words"] = 2560 if device.identifier.family == "h7" else 212
+        global_properties["instances"].append(self.instance)
 
         if device.identifier.family == "g0":
             shared_irq_it0 = get_shared_irq(device, "FDCAN_IT0")
@@ -132,22 +140,11 @@ class Instance(Module):
             properties["shared_irq_it1"] = shared_irq_it1
             global_properties["shared_irqs"][shared_irq_it1].append([self.instance, "IT1"])
 
-        global_properties["instances"].append(self.instance)
-        global_properties["instances"].sort()
 
-        message_ram_option_legacy_values = {
-            "message_ram.standard_filter_count": 28,
-            "message_ram.extended_filter_count": 8,
-            "message_ram.rx_fifo_0_elements": 3,
-            "message_ram.rx_fifo_1_elements": 3,
-            "message_ram.tx_fifo_elements": 3,
-        }
-        for option, legacy_value in message_ram_option_legacy_values.items():
+        for option in message_ram_option_legacy_values.keys():
             if env.has_option(option):
                 value = env[option]
-            else:
-                value = legacy_value
-            global_properties["message_ram_options"][f"fdcan{self.instance}.{option}"] = value
+                global_properties["message_ram_options"][f"fdcan{self.instance}.{option}"] = value
 
         env.substitutions = properties
         env.outbasepath = "modm/src/modm/platform/can"
@@ -180,14 +177,20 @@ def prepare(module, options):
         ":platform:rcc",
         ":utils")
 
-    global_properties["shared_irqs"] = defaultdict(list)
-    global_properties["instances"] = []
-    global_properties["message_ram_options"] = {}
-
     driver = device.get_driver("fdcan")
+
+    global_properties["shared_irqs"] = defaultdict(list)
+
+    global_properties["instances"] = []
+
+    global_properties["message_ram_options"] = {}
+    global_properties["message_ram_length_words"] = 2560 if device.identifier.family == "h7" else (212 * len(driver["instance"]))
 
     for instance in listify(driver["instance"]):
         module.add_submodule(Instance(int(instance)))
+
+        for option, legacy_value in message_ram_option_legacy_values.items():
+            global_properties["message_ram_options"][f"fdcan{instance}.{option}"] = legacy_value
 
     return True
 
@@ -195,6 +198,14 @@ def build(env):
     device = env[":target"]
     env.substitutions.update(global_properties)
     env.substitutions["target"] = device.identifier
+
+    supports_configurable_message_ram = device.identifier.family == "h7"
+
+    if not supports_configurable_message_ram:
+        # fixed message RAM devices have all instances blocked out in the message RAM even if not enabled
+        driver = device.get_driver("fdcan")
+        env.substitutions["instances"] = driver["instance"]
+    env.substitutions["instances"].sort()
 
     env.outbasepath = "modm/src/modm/platform/can"
 
