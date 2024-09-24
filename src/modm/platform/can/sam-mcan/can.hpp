@@ -84,9 +84,9 @@ private:
 	always_false_v = false;
 
 	using MessageRam = fdcan::MessageRam<id, mrc>;
-	static_assert(mrc.totalSectionWords() <= 4352*4, "Max message ram size is 4352 words.");
+	static_assert(mrc.totalSectionWords() <= 4352, "Max message ram size is 4352 words.");
 
-	static inline std::array<uint32_t, mrc.totalSectionWords()/4> modm_aligned(4)
+	static inline std::array<uint32_t, mrc.totalSectionWords()> modm_aligned(4)
 	messageRamMemory{};
 
 	struct RxMessage
