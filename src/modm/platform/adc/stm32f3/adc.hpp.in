@@ -356,7 +356,7 @@ public:
 	 * refer to the ADC external trigger section on reference manual
 	 * of your controller for more information
 	 */
-	enum class RegularConversionExternalTrigger
+	enum class ExternalTriggerEvent
 	{
 		Event0 = 0x00u,
 		Event1 = 0x01u,
@@ -373,7 +373,7 @@ public:
 		Event13 = 0x0Du,
 		Event14 = 0x0Eu,
 		Event15 = 0x0Fu,
-%% if target["family"] in ["g4"]
+%% if target["family"] in ["g4", "h7"]
 		Event16 = 0x10u,
 		Event17 = 0x11u,
 		Event18 = 0x12u,
@@ -563,17 +563,17 @@ public:
 	 *
 	 * @param externalTriggerPolarity
 	 * 		Polarity of the external trigger signal.
-	 * @param regularConversionExternalTrigger
+	 * @param externalTriggerEvent
 	 * 		Regular conversion external trigger source.
 	 */
 	static inline void enableRegularConversionExternalTrigger(
 		ExternalTriggerPolarity externalTriggerPolarity,
-		RegularConversionExternalTrigger regularConversionExternalTrigger);
+		ExternalTriggerEvent externalTriggerEvent);
 
 	/**
 	 * Disable regular conversions external trigger.
 	 */
-	static inline void disableRegularConversionExternalTrigger( void );
+	static inline void disableRegularConversionExternalTrigger();
 
 	/**
 	 * @return If the conversion is finished.
@@ -620,12 +620,12 @@ public:
 	 *
 	 * @param externalTriggerPolarity
 	 * 		Polarity of the external trigger signal.
-	 * @param regularConversionExternalTrigger
+	 * @param externalTriggerEvent
 	 * 		Regular conversion external trigger source.
 	 */
 	static inline void enableInjectedConversionExternalTrigger(
 		ExternalTriggerPolarity externalTriggerPolarity,
-		RegularConversionExternalTrigger regularConversionExternalTrigger);
+		ExternalTriggerEvent externalTriggerEvent);
 
 	/**
 	 * Disable injected conversions external trigger.
@@ -678,7 +678,7 @@ public:
 		}
 	}
 
-%% if target["family"] in ["f3", "l4", "l5"] or (target["family"] in ["h7"] and target["name"][0] in ["4", "5", "a", "b"]):
+%% if target["family"] in ["f3", "l4", "l5"] or (target["family"] in ["h7"] and resolution == 16):
 	/**
 	 * @arg slot for the offset register (0..3)
 	 * @arg channel channel to which the offset is applied
